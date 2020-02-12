@@ -6,6 +6,7 @@ public class Player : MonoBehaviour
 {
 
     [SerializeField] float runSpeed = 10f;
+    [SerializeField] float jumpSpeed = 10f;
 
     Rigidbody2D myRigidBody;
     Animator animator;
@@ -16,6 +17,13 @@ public class Player : MonoBehaviour
         Vector2 playerVelocity = new Vector2(controlThrow*runSpeed, myRigidBody.velocity.y);
         myRigidBody.velocity = playerVelocity;
         animator.SetBool("Running", true);
+    }
+
+    private void Jump() {
+        if (Input.GetButtonDown("Jump")) {
+            Vector2 jumpVelocity = new Vector2(0f, jumpSpeed);
+            myRigidBody.velocity += jumpVelocity;
+        }
     }
 
     private void UpdateAnimationState() {
@@ -42,6 +50,7 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Jump();
         Run();
         FlipSprite();
         UpdateAnimationState();
