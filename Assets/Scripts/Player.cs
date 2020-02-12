@@ -5,12 +5,29 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
 
+
+    //Player Movement:
     [SerializeField] float runSpeed = 10f;
     [SerializeField] float jumpSpeed = 10f;
 
+    //Variables
     Rigidbody2D myRigidBody;
     Animator animator;
 
+    //Functions
+    void Start()
+    {
+        animator = GetComponent<Animator>();
+        myRigidBody = GetComponent<Rigidbody2D>();
+    }
+
+    void Update()
+    {
+        Jump();
+        Run();
+        FlipSprite();
+        UpdateAnimationState();
+    }
 
     private void Run() {
         float controlThrow = Input.GetAxis("Horizontal");
@@ -40,19 +57,5 @@ public class Player : MonoBehaviour
         }
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        animator = GetComponent<Animator>();
-        myRigidBody = GetComponent<Rigidbody2D>();
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        Jump();
-        Run();
-        FlipSprite();
-        UpdateAnimationState();
-    }
 }
