@@ -8,6 +8,7 @@ public class Player : MonoBehaviour
 
     //Player Movement:
     [SerializeField] float runSpeed = 10f;
+    [SerializeField] float climbSpeed = 10f;
     [SerializeField] float jumpSpeed = 10f;
 
     //Variables
@@ -57,7 +58,9 @@ public class Player : MonoBehaviour
             animator.SetBool("Climbing", true);
 
             float controlThrow = Input.GetAxis("Vertical");
-            Vector2 climbVelocity = new
+            Vector2 climbVelocity = new Vector2(myRigidBody.velocity.x, controlThrow*climbSpeed);
+            myRigidBody.velocity = climbVelocity;
+            myRigidBody.gravityScale = 0;
 
         }
     }
@@ -70,6 +73,7 @@ public class Player : MonoBehaviour
 
         if (!myCollider.IsTouchingLayers(ladderLayer)) {
             animator.SetBool("Climbing", false);
+            myRigidBody.gravityScale = 6.5f;
         }
     }
 
