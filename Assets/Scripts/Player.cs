@@ -14,7 +14,8 @@ public class Player : MonoBehaviour
     //Variables
     Rigidbody2D myRigidBody;
     Animator animator;
-    Collider2D myCollider;
+    CapsuleCollider2D myCollider;
+    BoxCollider2D feetCollider;
     LayerMask groundLayer;
     LayerMask ladderLayer;
 
@@ -25,7 +26,8 @@ public class Player : MonoBehaviour
         groundLayer = LayerMask.GetMask("Ground");
         animator = GetComponent<Animator>();
         myRigidBody = GetComponent<Rigidbody2D>();
-        myCollider = GetComponent<Collider2D>();
+        myCollider = GetComponent<CapsuleCollider2D>();
+        feetCollider = GetComponent<BoxCollider2D>();
     }
 
     void Update()
@@ -45,7 +47,7 @@ public class Player : MonoBehaviour
     }
 
     private void Jump() {
-        if (myCollider.IsTouchingLayers(groundLayer)) {
+        if (feetCollider.IsTouchingLayers(groundLayer)) {
             if (Input.GetButtonDown("Jump")) {
                 Vector2 jumpVelocity = new Vector2(0f, jumpSpeed);
                 myRigidBody.velocity += jumpVelocity;
