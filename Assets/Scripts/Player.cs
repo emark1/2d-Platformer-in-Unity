@@ -18,6 +18,12 @@ public class Player : MonoBehaviour
     BoxCollider2D feetCollider;
     LayerMask groundLayer;
     LayerMask ladderLayer;
+    LayerMask enemyLayer;
+    LayerMask hazardLayer;
+
+    [SerializeField] bool alive = true;
+    AudioSource playerAudio;
+
 
     //Functions
     void Start()
@@ -28,17 +34,26 @@ public class Player : MonoBehaviour
         myRigidBody = GetComponent<Rigidbody2D>();
         myCollider = GetComponent<CapsuleCollider2D>();
         feetCollider = GetComponent<BoxCollider2D>();
+        enemyLayer = LayerMask.GetMask("Enemy");
+        hazardLayer = LayerMask.GetMask("Hazard");
+        playerAudio = GetComponent<AudioSource>();
     }
 
     void Update()
     {
-        Climb();
-        Jump();
-        Run();
+        Movement();
+        PlayerDeath();
         FlipSprite();
         UpdateAnimationState();
     }
 
+    private void Movement() {
+        if (alive) {
+            Run();
+            Jump();
+            Climb();
+        }
+    }
     private void Run() {
         float controlThrow = Input.GetAxis("Horizontal");
         Vector2 playerVelocity = new Vector2(controlThrow*runSpeed, myRigidBody.velocity.y);
@@ -67,15 +82,31 @@ public class Player : MonoBehaviour
         }
     }
 
+    private void PlayerDeath() {
+        if (myCollider.IsTouchingLayers(enemyLayer) || myCollider.IsTouchingLayers(hazardLayer)) {
+            alive = false;
+            myRigidBody.velocity = new Vector2(0, 20f);
+            playerAudio.Play();
+        }
+    }
+
     private void UpdateAnimationState() {
-        bool playerHasHorizontalSpeed = Mathf.Abs(myRigidBody.velocity.x) > Mathf.Epsilon;
-        if (!playerHasHorizontalSpeed) {
-            animator.SetBool("Running", false);
+        if (alive) {
+            bool playerHasHorizontalSpeed = Mathf.Abs(myRigidBody.velocity.x) > Mathf.Epsilon;
+            if (!playerHasHorizontalSpeed) {
+                animator.SetBool("Running", false);
+            }
+
+            if (!myCollider.IsTouchingLayers(ladderLayer)) {
+                animator.SetBool("Climbing", false);
+                myRigidBody.gravityScale = 6.5f;
+            }
         }
 
-        if (!myCollider.IsTouchingLayers(ladderLayer)) {
+        if (!alive) {
+            animator.SetBool("Dead", true);
+            animator.SetBool("Running", false);
             animator.SetBool("Climbing", false);
-            myRigidBody.gravityScale = 6.5f;
         }
     }
 
@@ -85,6 +116,5 @@ public class Player : MonoBehaviour
             transform.localScale = new Vector2 (Mathf.Sign(myRigidBody.velocity.x), 1f);
         }
     }
-
 
 }

@@ -18,8 +18,8 @@ TagManager:
   - Ladder
   - Player
   - Background
-  - 
-  - 
+  - Enemy
+  - Hazard
   - 
   - 
   - 
@@ -47,6 +47,12 @@ TagManager:
     locked: 0
   - name: Ladders
     uniqueID: 1756705969
+    locked: 0
+  - name: Enemy
+    uniqueID: 2874771847
+    locked: 0
+  - name: Hazard
+    uniqueID: 517975147
     locked: 0
   - name: Player
     uniqueID: 1210842579
