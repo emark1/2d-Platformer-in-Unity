@@ -83,9 +83,9 @@ public class Player : MonoBehaviour
     }
 
     private void PlayerDeath() {
-        if (myCollider.IsTouchingLayers(enemyLayer) || myCollider.IsTouchingLayers(hazardLayer)) {
+        if (myCollider.IsTouchingLayers(hazardLayer)) {
             alive = false;
-            myRigidBody.velocity = new Vector2(0, 20f);
+            myRigidBody.velocity = new Vector2(3f, 20f);
             playerAudio.Play();
         }
     }
