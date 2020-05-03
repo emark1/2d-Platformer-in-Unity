@@ -20,7 +20,8 @@ public class Player : MonoBehaviour
     LayerMask ladderLayer;
     LayerMask enemyLayer;
     LayerMask hazardLayer;
-
+    LayerMask interactableLayer;
+    
     [SerializeField] bool alive = true;
     AudioSource playerAudio;
 
@@ -30,6 +31,7 @@ public class Player : MonoBehaviour
     {
         ladderLayer = LayerMask.GetMask("Ladder");
         groundLayer = LayerMask.GetMask("Ground");
+        interactableLayer = LayerMask.GetMask("Interactable");
         animator = GetComponent<Animator>();
         myRigidBody = GetComponent<Rigidbody2D>();
         myCollider = GetComponent<CapsuleCollider2D>();
@@ -83,7 +85,7 @@ public class Player : MonoBehaviour
     }
 
     private void PlayerDeath() {
-        if (myCollider.IsTouchingLayers(hazardLayer)) {
+        if (myCollider.IsTouchingLayers(hazardLayer) || myCollider.IsTouchingLayers(enemyLayer)) {
             alive = false;
             myRigidBody.velocity = new Vector2(3f, 20f);
             playerAudio.Play();
