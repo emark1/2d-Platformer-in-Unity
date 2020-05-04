@@ -21,7 +21,7 @@ public class Player : MonoBehaviour
     LayerMask enemyLayer;
     LayerMask hazardLayer;
     LayerMask interactableLayer;
-    
+
     [SerializeField] bool alive = true;
     AudioSource playerAudio;
 
@@ -89,6 +89,7 @@ public class Player : MonoBehaviour
             alive = false;
             myRigidBody.velocity = new Vector2(3f, 20f);
             playerAudio.Play();
+            FindObjectOfType<GameSession>().ProcessPlayerDeath();
         }
     }
 
